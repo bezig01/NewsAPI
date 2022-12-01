@@ -26,7 +26,7 @@ public final class NewsAPI {
       throw ErrorResponse.invalidURL
     }
     do {
-      let (data, _) = try await session.data(from: url, delegate: nil)
+      let (data, _) = try await session.data(from: url)
       let response = try decoder.decode(APIReponse<ArticlesResponse>.self, from: data)
       switch response.result {
       case .success(let articles):
@@ -49,7 +49,7 @@ public final class NewsAPI {
       throw ErrorResponse.invalidURL
     }
     do {
-      let (data, _) = try await session.data(from: url, delegate: nil)
+      let (data, _) = try await session.data(from: url)
       let response = try decoder.decode(APIReponse<ArticlesResponse>.self, from: data)
       switch response.result {
       case .success(let articles):
@@ -71,7 +71,7 @@ public final class NewsAPI {
       throw ErrorResponse.invalidURL
     }
     do {
-      let (data, _) = try await session.data(from: url, delegate: nil)
+      let (data, _) = try await session.data(from: url)
       let response = try decoder.decode(APIReponse<SourcesResponse>.self, from: data)
       switch response.result {
       case .success(let sources):

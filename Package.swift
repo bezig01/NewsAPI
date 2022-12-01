@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "NewsAPI",
-    platforms: [.iOS("15.0")],
+    platforms: [.iOS("13.0")],
     products: [
         .library(
             name: "NewsAPI",
