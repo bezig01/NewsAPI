@@ -5,7 +5,7 @@ public struct NewsSource: Decodable, Identifiable {
     public let name: String
     public let description: String?
     public let url: URL?
-    public let category: Category?
+    public let category: Topic?
     public let language: Language?
     public let country: Country?
 }
@@ -22,16 +22,16 @@ extension NewsSource: Equatable {
     }
 }
 
-#if DEBUG
-extension NewsSource {
-    public static let demo = NewsSource(
-        id: "abc-news",
-        name: "ABC News",
-        description: "Your trusted source for breaking news, analysis, exclusive interviews, headlines, and videos at ABCNews.com.",
-        url: URL(string: "https://abcnews.go.com"),
-        category: .top,
-        language: .en,
-        country: .us
-    )
-}
-#endif
+//#if DEBUG
+//extension NewsSource {
+//    public static let demo = NewsSource(
+//        id: "abc-news",
+//        name: "ABC News",
+//        description: "Your trusted source for breaking news, analysis, exclusive interviews, headlines, and videos at ABCNews.com.",
+//        url: URL(string: "https://abcnews.go.com"),
+//        category: .top,
+//        language: .en,
+//        country: .us
+//    )
+//}
+//#endif

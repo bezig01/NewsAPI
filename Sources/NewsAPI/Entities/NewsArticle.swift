@@ -14,19 +14,10 @@ public struct NewsArticle: Decodable {
     public let title: String?
     @FailableDecodable
     public private(set) var link: URL?
-    public let sourceId: String?
-    public let keywords: [String]?
-    public let creator: [String]?
+    public let excerpt: String?
+    public let summary: String?
     @FailableDecodable
-    public private(set) var imageUrl: URL?
-    @FailableDecodable
-    public private(set) var videoUrl: URL?
-    public let description: String?
-    public let pubDate: String?
-    public let content: String?
-    public let country: [String]?
-    public let category: [String]?
-    public let language: String?
+    public private(set) var media: URL?
 }
 
 extension NewsArticle: Identifiable {

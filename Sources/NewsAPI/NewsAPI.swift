@@ -21,65 +21,24 @@ public final class NewsAPI {
         self.session = session
     }
     
-    public func getTopHeadlines(
-        query: String? = nil,
-        categories: [Category]? = nil,
-        languages: [Language]? = nil,
-        domains: [String]? = nil
+    public func getLatestHeadlines(
+        when: String? = "1h",
+        languages: [String]? = ["en"],
+        countries: [String]? = ["us"],
+        topic: [Topic]? = [.news],
+        page: Int? = nil
     ) async throws -> [NewsArticle] {
-        guard let url = Endpoint.news(key: apiKey, query: query, categories: categories, languages: languages, domains: domains).url else {
+        guard let url = Endpoint.latestHeadlines(when: when, languages: languages, countries: countries, topic: topic, page: page).url else {
             throw NewsAPIError.invalidURL
         }
         do {
-            let (data, _) = try await session.data(from: url)
+            var request = URLRequest(url: url)
+            request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+            let (data, _) = try await session.data(for: request)
             let response = try decoder.decode(APIReponse<ArticlesResponse>.self, from: data)
             switch response.result {
             case .success(let articles):
                 return articles
-            case .failure(let error):
-                throw error
-            }
-        } catch {
-            throw error
-        }
-    }
-    
-    public func search(
-        query: String,
-        domains: [String]? = nil,
-        languages: [Language]? = nil
-    ) async throws -> [NewsArticle] {
-        guard let url = Endpoint.news(key: apiKey, query: query, languages: languages, domains: domains).url else {
-            throw NewsAPIError.invalidURL
-        }
-        do {
-            let (data, _) = try await session.data(from: url)
-            let response = try decoder.decode(APIReponse<ArticlesResponse>.self, from: data)
-            switch response.result {
-            case .success(let articles):
-                return articles
-            case .failure(let error):
-                throw error
-            }
-        } catch {
-            throw error
-        }
-    }
-    
-    public func getSources(
-        category: Category? = nil,
-        language: Language? = nil,
-        country: Country? = nil
-    ) async throws -> [NewsSource] {
-        guard let url = Endpoint.sources(key: apiKey, category: category, language: language, country: country).url else {
-            throw NewsAPIError.invalidURL
-        }
-        do {
-            let (data, _) = try await session.data(from: url)
-            let response = try decoder.decode(APIReponse<SourcesResponse>.self, from: data)
-            switch response.result {
-            case .success(let sources):
-                return sources
             case .failure(let error):
                 throw error
             }

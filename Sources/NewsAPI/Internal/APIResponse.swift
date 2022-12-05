@@ -12,7 +12,7 @@ struct APIReponse<T: Decodable & HasElementsType>: Decodable {
     init(from decoder: Decoder) throws {
         let response = try StatusResponse(from: decoder)
         switch response.status {
-        case .success:
+        case .ok:
             let response = try T(from: decoder)
             result = .success(response.elements)
         case .error:
@@ -23,23 +23,19 @@ struct APIReponse<T: Decodable & HasElementsType>: Decodable {
 }
 
 struct ArticlesResponse: Decodable, HasElementsType {
-    let totalResults: Int
-    let results: [NewsArticle]
-    let nextPage: Int
+    let totalHits: Int
+    let page: Int
+    let totalPages: Int
+    let pageSize: Int
+    let articles: [NewsArticle]
     
-    var elements: [NewsArticle] { results }
-}
-
-struct SourcesResponse: Decodable, HasElementsType {
-    let results: [NewsSource]
-    
-    var elements: [NewsSource] { results }
+    var elements: [NewsArticle] { articles }
 }
 
 private struct StatusResponse: Decodable {
     
     enum Status: String, Decodable {
-        case success, error
+        case ok, error
     }
     
     let status: Status
