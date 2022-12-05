@@ -1,50 +1,46 @@
-//
-//  File.swift
-//  
-//
-//  Created by Fumiya Yamanaka on 2021/07/11.
-//
-
 import Foundation
 
 protocol HasElementsType {
-  associatedtype Element
-  var elements: [Element] { get }
+    associatedtype Element
+    var elements: [Element] { get }
 }
 
 struct APIReponse<T: Decodable & HasElementsType>: Decodable {
-
-  let result: Result<[T.Element], ErrorResponse>
-
-  init(from decoder: Decoder) throws {
-    let response = try StatusResponse(from: decoder)
-    switch response.status {
-    case .ok:
-        let response = try T(from: decoder)
-        result = .success(response.elements)
-    case .error:
-      let response = try ErrorResponse(from: decoder)
-      result = .failure(response)
+    
+    let result: Result<[T.Element], ErrorResponse>
+    
+    init(from decoder: Decoder) throws {
+        let response = try StatusResponse(from: decoder)
+        switch response.status {
+        case .success:
+            let response = try T(from: decoder)
+            result = .success(response.elements)
+        case .error:
+            let response = try ErrorResponse(from: decoder)
+            result = .failure(response)
+        }
     }
-  }
 }
 
 struct ArticlesResponse: Decodable, HasElementsType {
-  let articles: [NewsArticle]
-  let totalResults: Int
-  var elements: [NewsArticle] { articles }
+    let totalResults: Int
+    let results: [NewsArticle]
+    let nextPage: Int
+    
+    var elements: [NewsArticle] { results }
 }
 
 struct SourcesResponse: Decodable, HasElementsType {
-  let sources: [NewsSource]
-  var elements: [NewsSource] { sources }
+    let results: [NewsSource]
+    
+    var elements: [NewsSource] { results }
 }
 
 private struct StatusResponse: Decodable {
-
-  enum Status: String, Decodable {
-    case ok, error
-  }
-
-  let status: Status
+    
+    enum Status: String, Decodable {
+        case success, error
+    }
+    
+    let status: Status
 }
