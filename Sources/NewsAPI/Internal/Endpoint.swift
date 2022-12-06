@@ -8,9 +8,9 @@ struct Endpoint {
 extension Endpoint {
     var url: URL? {
         var components = URLComponents()
-        components.scheme = "https"
-        components.host = "api.newscatcherapi.com"
-        components.path = "/v2/\(path)"
+        components.scheme = "http"
+        components.host = "159.223.25.171"
+        components.path = "/bridge/newscatcher/\(path)"
         components.queryItems = queryItems.filter { $0.value != nil }
         return components.url
     }
